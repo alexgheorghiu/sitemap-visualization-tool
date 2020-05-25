@@ -50,7 +50,7 @@ output_csv = args.output_file
 # Main script functions
 
 
-def peel_layers(urls, layers=3):
+def peel_layers(urls, layers=3, output_csv_file=output_csv):
 	''' Builds a dataframe containing all unique page identifiers up
 	to a specified depth and counts the number of sub-pages for each.
 	Prints results to a CSV file.
@@ -92,7 +92,7 @@ def peel_layers(urls, layers=3):
 
 	# Convert column names to string types and export
 	sitemap_layers.columns = [str(col) for col in sitemap_layers.columns]
-	sitemap_layers.to_csv(output_csv, index=False)
+	sitemap_layers.to_csv(output_csv_file, index=False)
 
 	# Return the dataframe
 	return sitemap_layers
@@ -105,7 +105,7 @@ def main():
 	print('Loaded {:,} URLs'.format(len(sitemap_urls)))
 
 	print('Categorizing up to a depth of %d' % categorization_depth)
-	sitemap_layers = peel_layers(urls=sitemap_urls, layers=categorization_depth)
+	sitemap_layers = peel_layers(urls=sitemap_urls, layers=categorization_depth, output_csv_file=output_csv)
 	print("Printed %d rows of data to %s" % (len(sitemap_layers), output_csv))
 
 
