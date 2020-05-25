@@ -28,7 +28,7 @@ from __future__ import print_function
 sitemap_url = 'https://www.sportchek.ca/sitemap.xml'
 sitemap_is_index = True # Does sitemap_url point to other XML pages?
 sitemap_is_gzip = False # Are the XML pages in compressed format?
-
+sitemap_output = 'sitemap_urls.dat'
 
 # Import external library dependencies
 
@@ -49,6 +49,9 @@ parser.add_argument('--not_index', action='store_true',
                     help='Does the given URL contain the sitemap directly?')
 parser.add_argument('--gzip', action='store_true',
                     help='Are the XML files in gzip (.gz) format?')
+parser.add_argument('--output', type=str,
+                    help='File location for dumping data')
+
 args = parser.parse_args()
 
 
@@ -65,6 +68,9 @@ if args.not_index:
 
 if args.gzip:
     sitemap_is_gzip = True
+
+if args.output:
+	sitemap_output = args.output
 
 
 
@@ -174,13 +180,13 @@ def main():
             sitemap_urls = get_gzip_urls('gzip-sitemaps/' + filename)
 
     # Print the URLs to a file
-    with open('sitemap_urls.dat', 'w') as f:
+    with open(sitemap_output, 'w') as f:
         for url in sitemap_urls:
             f.write(url + '\n')
 
     # Print the number of URLs found
-    print('Found {:,} URLs in the sitemap and saved them to sitemap_urls.dat'\
-            .format(len(sitemap_urls)))
+    print('Found {:,} URLs in the sitemap and saved them to {}'\
+            .format(len(sitemap_urls), sitemap_output))
 
 
 if __name__ == '__main__':
